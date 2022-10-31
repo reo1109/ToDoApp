@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/model/list.dart';
 import 'package:todo/utils/widget_utils.dart';
 
 class AddListPage extends StatefulWidget {
@@ -9,6 +10,7 @@ class AddListPage extends StatefulWidget {
 }
 
 class _AddListPageState extends State<AddListPage> {
+  var i = 1;
   DateTime? _selectedDate;
   TextEditingController contentController = TextEditingController();
   TextEditingController deadlineController = TextEditingController();
@@ -48,33 +50,38 @@ class _AddListPageState extends State<AddListPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: Container(
-                width: 300,
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: deadlineController,
-                      decoration: InputDecoration(
-                          hintText: '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().hour}'
-                      ),
+            Container(
+              width: 300,
+              child: Column(
+                children: [
+                  TextField(
+                    controller: deadlineController,
+                    decoration: InputDecoration(
+                        hintText: '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().hour}'
                     ),
-                    IconButton(
-                        onPressed: () {
-                          _selectDate(context);
-                        },
-                        icon: Icon(Icons.calendar_today))
-                  ],
-                ),
-
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                      icon: Icon(Icons.calendar_today))
+                ],
               ),
+
             ),
             ElevatedButton(
                 onPressed: () {
-                  if(contentController.text.isNotEmpty
-                      && deadlineController.text.isNotEmpty) {
-                    Navigator.of(context).pop(contentController.text);
+                  if(contentController.text.isNotEmpty) {
+                    Todo newTodo = Todo(
+                        toDoId: i++,
+                        content: contentController.text,
+                        remarks: remarksController.text,
+                        deadLine: _selectedDate,
+                        createdTime: DateTime.now(),
+                        checkBox: false
+                    );
+
+                    Navigator.of(context).pop(newTodo);
                   }
 
                 },

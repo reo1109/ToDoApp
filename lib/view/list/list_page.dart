@@ -16,71 +16,7 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
 
-  List<toDo> toDoList = [
-    toDo(
-        toDoId: '1', 
-        content: 'tipuに家賃払いにいくaaaaaaaaaaaaaa',
-        createdTime: DateTime.now(), 
-        deadLine: DateTime(2022, 10, 25, 11, 0), 
-        checkBox: false
-    ),
-    toDo(
-        toDoId: '2', 
-        content: '履歴書を提出する',
-        createdTime: DateTime.now(),
-        deadLine: DateTime(2022, 10, 28, 23, 0),
-        checkBox: false
-    ),
-    toDo(
-        toDoId: '3',
-        content: '履歴書を提出する',
-        createdTime: DateTime.now(),
-        deadLine: DateTime(2022, 10, 28, 23, 0),
-        checkBox: false
-    ),
-    toDo(
-        toDoId: '4',
-        content: '履歴書を提出する',
-        createdTime: DateTime.now(),
-        deadLine: DateTime(2022, 10, 28, 23, 0),
-        checkBox: false
-    ),
-    toDo(
-        toDoId: '5',
-        content: '履歴書を提出する',
-        createdTime: DateTime.now(),
-        deadLine: DateTime(2022, 10, 28, 23, 0),
-        checkBox: false
-    ),
-    toDo(
-        toDoId: '6',
-        content: '履歴書を提出する',
-        createdTime: DateTime.now(),
-        deadLine: DateTime(2022, 10, 28, 23, 0),
-        checkBox: false
-    ),
-    toDo(
-        toDoId: '7',
-        content: '履歴書を提出する',
-        createdTime: DateTime.now(),
-        deadLine: DateTime(2022, 10, 28, 23, 0),
-        checkBox: false
-    ),
-    toDo(
-        toDoId: '8',
-        content: '履歴書を提出する',
-        createdTime: DateTime.now(),
-        deadLine: DateTime(2022, 10, 28, 23, 0),
-        checkBox: false
-    ),
-    toDo(
-        toDoId: '9',
-        content: '履歴書を提出する',
-        createdTime: DateTime.now(),
-        deadLine: DateTime(2022, 10, 28, 23, 0),
-        checkBox: false
-    ),
-  ];
+  List<Todo> todoList = [];
 
   
   @override
@@ -127,7 +63,7 @@ class _ListPageState extends State<ListPage> {
           Container(
             height: 620,
             child: ListView.builder(
-              itemCount: toDoList.length,
+              itemCount: todoList.length,
               itemBuilder: (context, index) {
                 return Container(
                   decoration: BoxDecoration(
@@ -143,21 +79,20 @@ class _ListPageState extends State<ListPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Checkbox(
-                            value: toDoList[index].checkBox,
+                            value: todoList[index].checkBox,
                             onChanged: (value) {
                               setState(() {
-                                toDoList[index].checkBox = value!;
+                                todoList[index].checkBox = value!;
                               });
                             },
                           ),
-                          Flexible(
-                              child: Text(toDoList[index].content, style: TextStyle(fontSize: 20),)),
+                          Text(todoList[index].content, style: TextStyle(fontSize: 20),),
                           ElevatedButton(
                               onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage()));},
                               child: Text('詳細')),
                         ],
                       ),
-                      Text(DateFormat('〆切: M月d日h時m分').format(toDoList[index].deadLine!), style: TextStyle(fontSize: 10),),
+                      Text(DateFormat('〆切: M月d日h時m分').format(todoList[index].deadLine!), style: TextStyle(fontSize: 10),),
                     ],
                   ),
                 );
@@ -167,9 +102,7 @@ class _ListPageState extends State<ListPage> {
           Align(
             alignment: Alignment.bottomCenter,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddListPage()));
-                },
+                onPressed: null,
                 child: Text('確定'),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(150, 50),
@@ -180,13 +113,16 @@ class _ListPageState extends State<ListPage> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddListPage()));
+        onPressed: () async {
+          final Todo newList = await Navigator.push(context, MaterialPageRoute(builder: (context) => AddListPage())) as Todo;
+
+          setState(() {
+            todoList.add(newList);
+          });
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.green,
       ),
-
     );
   }
 }

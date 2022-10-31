@@ -1,10 +1,10 @@
-class toDo {
-  String toDoId;
+class Todo {
+  int toDoId;
   String content;
   String remarks;
   DateTime? deadLine;
   DateTime? createdTime;
   bool? checkBox;
 
-  toDo({this.toDoId = '', this.content = '',this.remarks = '',  this.createdTime, this.deadLine, this.checkBox });
+  Todo({this.toDoId = 0, this.content = '',this.remarks = '',  this.createdTime, this.deadLine, this.checkBox });
 }
