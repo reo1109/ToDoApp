@@ -83,7 +83,6 @@ class _AddListPageState extends State<AddListPage> {
 
                     Navigator.of(context).pop(newTodo);
                   }
-
                 },
                 child: Text('リスト追加')
             )
