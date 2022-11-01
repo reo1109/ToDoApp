@@ -4,7 +4,7 @@ class WidgetUtils {
 
   static AppBar createAppBar(String title) {
     return AppBar(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.lightGreen,
       title: Text(title),
       centerTitle: true,
     );

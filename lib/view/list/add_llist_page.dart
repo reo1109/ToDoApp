@@ -20,73 +20,76 @@ class _AddListPageState extends State<AddListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: WidgetUtils.createAppBar('リストの追加'),
-      body: Container(
-        width: double.infinity,
-        child: Column(
-          children: [
-          SizedBox(height: 50,),
-            Container(
-              width: 300,
-              child: TextField(
-                controller: contentController,
-                decoration: InputDecoration(
-                hintText: 'To Do'
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          child: Column(
+            children: [
+            SizedBox(height: 50,),
+              Container(
+                width: 300,
+                child: TextField(
+                  controller: contentController,
+                  decoration: InputDecoration(
+                  hintText: 'To Do'
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: Container(
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0),
+                child: Container(
+                  width: 300,
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: remarksController,
+                        decoration: InputDecoration(
+                            hintText: '備考'
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
                 width: 300,
                 child: Column(
                   children: [
                     TextField(
-                      controller: remarksController,
+                      controller: deadlineController,
                       decoration: InputDecoration(
-                          hintText: '備考'
+                          hintText: '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().hour}'
                       ),
                     ),
+                    IconButton(
+                        onPressed: () {
+                          _selectDate(context);
+                        },
+                        icon: Icon(Icons.calendar_today))
                   ],
                 ),
-              ),
-            ),
-            Container(
-              width: 300,
-              child: Column(
-                children: [
-                  TextField(
-                    controller: deadlineController,
-                    decoration: InputDecoration(
-                        hintText: '${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().hour}'
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        _selectDate(context);
-                      },
-                      icon: Icon(Icons.calendar_today))
-                ],
-              ),
 
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  if(contentController.text.isNotEmpty) {
-                    Todo newTodo = Todo(
-                        toDoId: i++,
-                        content: contentController.text,
-                        remarks: remarksController.text,
-                        deadLine: _selectedDate,
-                        createdTime: DateTime.now(),
-                        checkBox: false
-                    );
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    if(contentController.text.isNotEmpty
+                        && deadlineController.text.isNotEmpty) {
+                      Todo newTodo = Todo(
+                          toDoId: i++,
+                          content: contentController.text,
+                          remarks: remarksController.text,
+                          deadLine: _selectedDate,
+                          createdTime: DateTime.now(),
+                          checkBox: false
+                      );
 
-                    Navigator.of(context).pop(newTodo);
-                  }
-                },
-                child: Text('リスト追加')
-            )
-          ]
+                      Navigator.of(context).pop(newTodo);
+                    }
+                  },
+                  child: Text('リスト追加')
+              )
+            ]
+          ),
         ),
       ),
     );

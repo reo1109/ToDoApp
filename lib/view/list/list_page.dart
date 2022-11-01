@@ -18,6 +18,7 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
 
   List<Todo> todoList = [];
+  List<Todo> completionList = [];
 
   
   @override
@@ -59,80 +60,75 @@ class _ListPageState extends State<ListPage> {
         ),
       ),
 
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: 620,
-            child: ListView.builder(
-              itemCount: todoList.length,
-              itemBuilder: (context, index) {
-                return Slidable(
-                  key: const ValueKey(0),
-
-                  startActionPane: ActionPane(
-                    dismissible: DismissiblePane(onDismissed: () {}),
-                    motion: ScrollMotion(),
-                    children: [
-                      SlidableAction(
-                        onPressed: (BuildContext context) async {
-                          setState(() {
-                            todoList.removeAt(index);
-                          });
-                        },
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
-                        icon: Icons.delete,
-                        label: 'Delete',
-                      ),
-                    ],
-
+      body: Container(
+        height: 620,
+        child: ListView.builder(
+          itemCount: todoList.length,
+          itemBuilder: (context, index) {
+            return Slidable(
+              key: const ValueKey(0),
+              startActionPane: ActionPane(
+                dismissible: DismissiblePane(onDismissed: () {}),
+                motion: ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (BuildContext context) async {
+                      setState(() {
+                        todoList.removeAt(index);
+                      });
+                    },
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    label: '削除',
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: index == 0 ? Border(
-                          top: BorderSide(color: Colors.grey, width: 1),
-                          bottom: BorderSide(color: Colors.grey, width: 1),
-                        ): Border(bottom: BorderSide(color: Colors.grey, width: 1),)
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    child: Column(
+                ],
+              ),
+              endActionPane: ActionPane(
+                dismissible: DismissiblePane(onDismissed: () {}),
+                motion: ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (BuildContext context) async {
+                      setState(() {
+                        completionList.add(todoList[index]);
+                        todoList.removeAt(index);
+                      });
+                    },
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    icon: Icons.check,
+                    label: '完了',
+                  ),
+                ],
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: index == 0 ? Border(
+                      top: BorderSide(color: Colors.grey, width: 1),
+                      bottom: BorderSide(color: Colors.grey, width: 1),
+                    ): Border(bottom: BorderSide(color: Colors.grey, width: 1),)
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Checkbox(
-                              value: todoList[index].checkBox,
-                              onChanged: (value) {
-                                setState(() {
-                                  todoList[index].checkBox = value!;
-                                });
-                              },
-                            ),
-                            Text(todoList[index].content, style: TextStyle(fontSize: 20),),
-                            ElevatedButton(
-                                onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage()));},
-                                child: Text('詳細')),
-                          ],
-                        ),
-                        Text(DateFormat('〆切: M月d日h時m分').format(todoList[index].deadLine!), style: TextStyle(fontSize: 10),),
+                        Text('${index+1}', style: TextStyle(fontSize: 20),),
+                        Text(todoList[index].content, style: TextStyle(fontSize: 20),),
+                        ElevatedButton(
+                            onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage()));},
+                            child: Text('詳細')),
                       ],
                     ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                onPressed: null,
-                child: Text('確定'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(150, 50),
+                    Text(DateFormat('〆切: M月d日h時m分').format(todoList[index].deadLine!), style: TextStyle(fontSize: 10),),
+                  ],
                 ),
-              )
-          )
-        ]
+              ),
+            );
+          },
+        ),
       ),
 
       floatingActionButton: FloatingActionButton(
@@ -144,7 +140,7 @@ class _ListPageState extends State<ListPage> {
           });
         },
         child: Icon(Icons.add),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.lightGreen,
       ),
     );
   }
